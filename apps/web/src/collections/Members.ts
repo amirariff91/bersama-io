@@ -4,7 +4,7 @@ export const Members: CollectionConfig = {
   slug: 'members',
   access: {
     read: ({ req }: { req: PayloadRequest }) => Boolean(req.user),
-    create: () => true, // Allow public signup
+    create: ({ req }: { req: PayloadRequest }) => Boolean(req.user), // Only internal server-side via getPayload()
     update: ({ req }: { req: PayloadRequest }) => Boolean(req.user),
     delete: ({ req }: { req: PayloadRequest }) => Boolean(req.user),
   },

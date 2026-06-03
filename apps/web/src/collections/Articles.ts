@@ -4,7 +4,14 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 export const Articles: CollectionConfig = {
   slug: 'articles',
   access: {
-    read: () => true,
+    read: ({ req }: { req: PayloadRequest }) => {
+      if (req.user) return true // Admins see all
+      return {
+        status: {
+          equals: 'published',
+        },
+      }
+    },
     create: ({ req }: { req: PayloadRequest }) => Boolean(req.user),
     update: ({ req }: { req: PayloadRequest }) => Boolean(req.user),
     delete: ({ req }: { req: PayloadRequest }) => Boolean(req.user),

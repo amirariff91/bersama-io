@@ -64,7 +64,7 @@ export default function KadPage() {
               Muat Turun
             </a>
             <a
-              href={`https://wa.me/?text=${encodeURIComponent('Saya penyokong Bersama Malaysia! 👊 Jana kad anda di bersama.io/kad')}`}
+              href={`https://wa.me/?text=${encodeURIComponent(`Saya penyokong Bersama! Lihat kad saya: ${cardUrl} — Jana kad anda di bersama.io/kad`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 bg-green-500 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"

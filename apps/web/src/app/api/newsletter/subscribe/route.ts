@@ -1,11 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createHash } from 'crypto'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+// Rate limit: 3 subscribes per 5 minutes per IP
+const subRateLimitMap = new Map<string, { count: number; resetAt: number }>()
+
 export async function POST(req: NextRequest) {
   try {
+    // Rate limiting
+    const ip = req.headers.get('cf-connecting-ip') || req.headers.get('x-forwarded-for') || 'unknown'
+    const now = Date.now()
+    const rl = subRateLimitMap.get(ip)
+    if (rl && now < rl.resetAt && rl.count >= 3) {
+      return NextResponse.json({ error: 'Too many requests', code: 'RATE_LIMITED' }, { status: 429 })
+    }
+    if (!rl || now >= rl.resetAt) {
+      subRateLimitMap.set(ip, { count: 1, resetAt: now + 300_000 })
+    } else {
+      rl.count++
+    }
+
     const body = await req.json() as { email?: unknown; consent?: unknown }
     const { email, consent } = body
 
@@ -13,7 +31,7 @@ export async function POST(req: NextRequest) {
     if (!email || typeof email !== 'string' || !email.includes('@')) {
       return NextResponse.json({ error: 'Invalid email', code: 'INVALID_EMAIL' }, { status: 400 })
     }
-    if (!consent) {
+    if (consent !== true) {
       return NextResponse.json({ error: 'Consent required', code: 'NO_CONSENT' }, { status: 400 })
     }
     // PDPA: no IC numbers
@@ -48,6 +66,24 @@ export async function POST(req: NextRequest) {
           preconfirm_subscriptions: true,
         }),
       })
+    }
+
+    // Write PDPA audit record to Members collection
+    try {
+      const payload = await getPayload({ config: configPromise })
+      await payload.create({
+        collection: 'members',
+        data: {
+          email,
+          subscribedAt: new Date().toISOString(),
+          consentText: 'Saya bersetuju data saya diproses oleh bersama.io dan pembekal perkhidmatan kami, termasuk pembekal di luar Malaysia, bagi tujuan menerima kemaskini berita.',
+          ipHash,
+          isActive: true,
+        },
+      })
+    } catch (pdpaErr) {
+      // Log but don't fail — Listmonk already has the record
+      console.error('[subscribe] PDPA record write failed:', pdpaErr)
     }
 
     // Send welcome email via Resend

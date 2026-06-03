@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import satori from 'satori'
 import sharp from 'sharp'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 
 // Rate limiting: simple in-memory counter per IP (5 per min)
 // Production: replace with Cloudflare WAF rule
@@ -29,6 +31,20 @@ export async function POST(req: NextRequest) {
     rateLimitMap.set(ip, { count: 1, resetAt: now + 60_000 })
   } else {
     rl.count++
+  }
+
+  // Check campaign period lock (Electoral Offences Act compliance)
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const settings = await payload.findGlobal({ slug: 'site-settings' })
+    if (settings?.campaignPeriodLock) {
+      return NextResponse.json(
+        { error: 'ID card generation is suspended during the formal campaign period.', code: 'CAMPAIGN_LOCK' },
+        { status: 423 }
+      )
+    }
+  } catch {
+    // If settings fetch fails, allow through — don't block on config errors
   }
 
   const body = await req.json() as { name?: unknown; locale?: unknown }

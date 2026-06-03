@@ -26,8 +26,8 @@ export function buildMetadata(opts: MetaOptions): Metadata {
     alternates: {
       canonical: url,
       languages: {
-        'ms': alternateLocale === 'ms' ? url : alternateUrl,
-        'en': alternateLocale === 'en' ? url : alternateUrl,
+        'ms': locale === 'ms' ? url : alternateUrl,
+        'en': locale === 'en' ? url : alternateUrl,
       },
     },
     openGraph: {

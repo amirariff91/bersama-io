@@ -53,6 +53,28 @@ export default async function ArticlePage({ params }: Props) {
         </time>
       </div>
       <h1 className="text-3xl font-bold text-editorial-dark mb-4">{String(article.title)}</h1>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'NewsArticle',
+            headline: String(article.title),
+            description: String(article.excerpt || ''),
+            author: [{ '@type': 'Person', name: String(article.author) }],
+            publisher: {
+              '@type': 'Organization',
+              name: 'bersama.io',
+              url: 'https://bersama.io',
+            },
+            datePublished: article.publishedAt ? String(article.publishedAt) : new Date().toISOString(),
+            dateModified: article.publishedAt ? String(article.publishedAt) : new Date().toISOString(),
+            url: url,
+            isAccessibleForFree: true,
+            inLanguage: params.locale === 'ms' ? 'ms-MY' : 'en-MY',
+          }),
+        }}
+      />
       <p className="text-gray-500 text-sm mb-2">Oleh / By: {String(article.author)}</p>
       <div className="prose max-w-none mt-8">
         {/* Rich text rendering — Payload lexical serializer in Phase 2 */}

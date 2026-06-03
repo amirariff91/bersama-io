@@ -50,7 +50,7 @@ export default buildConfig({
   ],
   globals: [SiteSettings],
   editor: lexicalEditor({}),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET ?? (() => { throw new Error('PAYLOAD_SECRET env var is required') })(),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

@@ -31,39 +31,40 @@ function isBersamaRelated(item: { title?: string; description?: string }): boole
 }
 
 export async function fetchBersamaNews(): Promise<RssItem[]> {
-  const results: RssItem[] = []
-
-  for (const source of RSS_SOURCES) {
-    try {
-      const res = await fetch(source.url, {
-        next: { revalidate: 900 }, // 15-min cache — minimum rate limit per CLAUDE.md
-        headers: { 'User-Agent': 'bersama.io/1.0 (+https://bersama.io)' },
-      })
-      if (!res.ok) continue
-      const xml = await res.text()
-      // Simple XML parsing — extract <item> blocks
-      const items = xml.match(/<item[\s\S]*?<\/item>/g) ?? []
-      for (const item of items.slice(0, 20)) {
-        const title = item.match(/<title><!\[CDATA\[(.+?)\]\]>|<title>(.+?)<\/title>/)?.[1] ?? ''
-        const description = item.match(/<description><!\[CDATA\[(.+?)\]\]>|<description>([\s\S]+?)<\/description>/)?.[1] ?? ''
-        const link = item.match(/<link>(.+?)<\/link>/)?.[1] ?? ''
-        const pubDate = item.match(/<pubDate>(.+?)<\/pubDate>/)?.[1] ?? ''
-
-        if (!isBersamaRelated({ title, description })) continue
-
-        results.push({
-          title: title.trim(),
-          excerpt: extractExcerpt(description),
-          sourceUrl: link.trim(),
-          sourceName: source.name,
-          publishedAt: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
-          language: source.lang,
+  const allResults = await Promise.all(
+    RSS_SOURCES.map(async (source) => {
+      const sourceResults: RssItem[] = []
+      try {
+        const res = await fetch(source.url, {
+          next: { revalidate: 900 },
+          headers: { 'User-Agent': 'bersama.io/1.0 (+https://bersama.io)' },
         })
+        if (!res.ok) return sourceResults
+        const xml = await res.text()
+        const items = xml.match(/<item[\s\S]*?<\/item>/g) ?? []
+        for (const item of items.slice(0, 20)) {
+          const titleMatch = item.match(/<title><!\[CDATA\[(.+?)\]\]>|<title>([^<]+)<\/title>/)
+          const title = (titleMatch?.[1] ?? titleMatch?.[2] ?? '').trim()
+          const descMatch = item.match(/<description><!\[CDATA\[([\s\S]+?)\]\]>|<description>([\s\S]+?)<\/description>/)
+          const description = (descMatch?.[1] ?? descMatch?.[2] ?? '').trim()
+          const link = item.match(/<link>([^<]+)<\/link>/)?.[1]?.trim() ?? ''
+          const pubDate = item.match(/<pubDate>([^<]+)<\/pubDate>/)?.[1] ?? ''
+          if (!isBersamaRelated({ title, description })) continue
+          sourceResults.push({
+            title,
+            excerpt: extractExcerpt(description),
+            sourceUrl: link,
+            sourceName: source.name,
+            publishedAt: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
+            language: source.lang,
+          })
+        }
+      } catch (err) {
+        console.error(`[rss] failed to fetch ${source.name}:`, err)
       }
-    } catch (err) {
-      console.error(`[rss] failed to fetch ${source.name}:`, err)
-    }
-  }
-
+      return sourceResults
+    })
+  )
+  const results: RssItem[] = allResults.flat()
   return results.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 }
