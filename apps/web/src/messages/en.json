@@ -1,1 +1,66 @@
-{"common": {"siteTitle": "bersama.io", "tagline": "Supporter's Voice, Free & Bold", "unofficial": "Unofficial supporter platform"}}
+{
+  "common": {
+    "siteTitle": "bersama.io",
+    "tagline": "Supporter's Voice, Free & Bold",
+    "unofficial": "Unofficial supporter platform of Parti Bersama Malaysia",
+    "readMore": "Read more",
+    "shareWhatsApp": "Share on WhatsApp",
+    "backToHome": "Back to homepage",
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "nav": {
+    "home": "Home",
+    "news": "News",
+    "agenda": "Agenda",
+    "johor": "Johor Election",
+    "positions": "Bersama Positions",
+    "about": "About",
+    "subscribe": "Subscribe"
+  },
+  "hero": {
+    "heading": "Supporter's Voice,\nFree & Bold",
+    "subheading": "Unofficial supporter platform of Parti Bersama Malaysia. News, agenda, and positions — all in one place.",
+    "ctaNews": "Follow Latest News",
+    "ctaAgenda": "Read the 12-Point Agenda"
+  },
+  "subscribe": {
+    "heading": "Get the Latest Updates",
+    "subheading": "Subscribe to our newsletter for Bersama updates delivered straight to your inbox.",
+    "placeholder": "Your email address",
+    "button": "Subscribe Now",
+    "consent": "I consent to my data being processed by bersama.io and its service providers, including providers outside Malaysia, for the purpose of receiving news updates.",
+    "success": "Thank you! Check your email for confirmation.",
+    "error": "An error occurred. Please try again."
+  },
+  "agenda": {
+    "heading": "12-Point Bersama Agenda",
+    "subheading": "A plain-language summary of each agenda item",
+    "itemPrefix": "Agenda",
+    "relatedNews": "Related News"
+  },
+  "johor": {
+    "heading": "Johor State Election",
+    "subheading": "Bersama's first electoral test — follow the latest developments",
+    "liveUpdate": "Live Updates",
+    "results": "Results",
+    "disclaimer": "This election coverage represents the independent editorial judgment of bersama.io and does not constitute official Parti Bersama Malaysia electoral communications."
+  },
+  "positions": {
+    "heading": "Bersama Positions",
+    "subheading": "The official record of Parti Bersama Malaysia's positions on current issues",
+    "evidenceTypes": {
+      "statement": "Official Statement",
+      "hansard": "Parliamentary Hansard",
+      "press-release": "Press Release",
+      "social": "Social Media",
+      "interview": "Interview"
+    }
+  },
+  "footer": {
+    "unofficial": "bersama.io is an UNOFFICIAL supporter platform. We are not affiliated with Parti Bersama Malaysia.",
+    "rights": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Us"
+  }
+}

@@ -5,6 +5,18 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { Users } from './collections/Users'
+import { Articles } from './collections/Articles'
+import { AgendaItems } from './collections/AgendaItems'
+import { Events } from './collections/Events'
+import { NewsItems } from './collections/NewsItems'
+import { LiveBlogPosts } from './collections/LiveBlogPosts'
+import { Members } from './collections/Members'
+import { Positions } from './collections/Positions'
+import { Media } from './collections/Media'
+import { Pages } from './collections/Pages'
+import { SiteSettings } from './globals/SiteSettings'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -25,8 +37,18 @@ export default buildConfig({
     fallback: true,
   },
   collections: [
-    // Collections will be imported here in Wave 2B
+    Users,
+    Articles,
+    AgendaItems,
+    Events,
+    NewsItems,
+    LiveBlogPosts,
+    Members,
+    Positions,
+    Media,
+    Pages,
   ],
+  globals: [SiteSettings],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -34,7 +56,7 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
+      connectionString: process.env.DATABASE_URL,
     },
   }),
   plugins: [
