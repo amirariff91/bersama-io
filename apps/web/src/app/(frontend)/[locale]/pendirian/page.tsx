@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { setRequestLocale } from 'next-intl/server'
 import { buildMetadata } from '@/lib/metadata'
 import { PositionCard } from '@/components/cards/PositionCard'
 
@@ -8,6 +9,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
   return buildMetadata({
     title: isMs ? 'Kedudukan Bersama' : 'Bersama Positions',
@@ -21,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PendrianPage({ params }: Props) {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
 
   // Placeholder — positions will be loaded from Payload CMS (Positions collection)

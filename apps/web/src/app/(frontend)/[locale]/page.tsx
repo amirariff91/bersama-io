@@ -1,13 +1,15 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import { UnofficialDisclaimer } from '@/components/ui/UnofficialDisclaimer'
 import { NewsletterForm } from '@/components/forms/NewsletterForm'
 
 interface Props {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
-export async function generateMetadata({ params: { locale } }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('common')
   return {
     title: `${t('siteTitle')} — ${t('tagline')}`,
@@ -15,7 +17,9 @@ export async function generateMetadata({ params: { locale } }: Props) {
   }
 }
 
-export default async function HomePage({ params: { locale } }: Props) {
+export default async function HomePage({ params }: Props) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('hero')
   const tJohor = await getTranslations('johor')
   const tAgenda = await getTranslations('agenda')

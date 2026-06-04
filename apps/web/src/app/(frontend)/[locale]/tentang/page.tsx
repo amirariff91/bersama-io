@@ -1,12 +1,14 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { UnofficialDisclaimer } from '@/components/ui/UnofficialDisclaimer'
 import { WhatsAppShareButton } from '@/components/ui/WhatsAppShareButton'
 
 interface Props {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
-export async function generateMetadata({ params: { locale } }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('about')
   return {
     title: `${t('title')} — bersama.io`,
@@ -14,7 +16,9 @@ export async function generateMetadata({ params: { locale } }: Props) {
   }
 }
 
-export default async function TentangPage({ params: { locale } }: Props) {
+export default async function TentangPage({ params }: Props) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('about')
 
   const pageUrl =

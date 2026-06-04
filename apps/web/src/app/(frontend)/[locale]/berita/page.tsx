@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { setRequestLocale } from 'next-intl/server'
 import { buildMetadata } from '@/lib/metadata'
 import { NewsCard } from '@/components/cards/NewsCard'
 import { fetchBersamaNews } from '@/lib/rss'
@@ -9,6 +10,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
   return buildMetadata({
     title: isMs ? 'Berita Bersama' : 'Bersama News',
@@ -24,6 +26,7 @@ export const revalidate = 900 // 15 minutes — matches RSS cache
 
 export default async function BeritaPage({ params }: Props) {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
 
   const allNews = await fetchBersamaNews()

@@ -18,6 +18,23 @@
     "about": "About",
     "subscribe": "Subscribe"
   },
+  "about": {
+    "title": "About bersama.io",
+    "whatWeAre": "What bersama.io Is",
+    "whatWeAreText": "bersama.io is an independently run, unofficial supporter platform that brings together news, the agenda, and positions related to Parti Bersama Malaysia in one place. We believe in transparent, easy-to-understand information that every citizen can access. This platform is built by supporters, for supporters — free and bold.",
+    "disclaimerBox": "Important: bersama.io is an UNOFFICIAL supporter platform. We are not affiliated with, operated by, or representative of Parti Bersama Malaysia. All content reflects our own independent editorial judgment.",
+    "shareLabel": "Share this page",
+    "rafizi": {
+      "name": "Rafizi Ramli",
+      "role": "President, Parti Bersama Malaysia",
+      "bio": "Rafizi Ramli is a Malaysian politician who leads Parti Bersama Malaysia. He is known for his advocacy of transparency, accountability, and reform of public institutions, as well as a data-driven approach to shaping policy."
+    },
+    "nikNazmi": {
+      "name": "Nik Nazmi Nik Ahmad",
+      "role": "Senior Leader, Parti Bersama Malaysia",
+      "bio": "Nik Nazmi Nik Ahmad is an experienced Malaysian politician contributing to the leadership of Parti Bersama Malaysia, with a focus on environmental issues, good governance, and policy reform."
+    }
+  },
   "hero": {
     "heading": "Supporter's Voice,\nFree & Bold",
     "subheading": "Unofficial supporter platform of Parti Bersama Malaysia. News, agenda, and positions — all in one place.",
@@ -64,8 +81,12 @@
   "johor": {
     "heading": "Johor State Election",
     "subheading": "Bersama's first electoral test — follow the latest developments",
+    "heroHeading": "Johor State Election",
+    "heroSubheading": "Parti Bersama Malaysia's first electoral test. Follow the results, key seat analysis, and live updates here.",
     "cta": "Follow Updates",
     "liveUpdate": "Live Updates",
+    "liveBlogTitle": "Live Updates",
+    "keySeatsTitle": "Key Seats to Watch",
     "results": "Results",
     "disclaimer": "This election coverage represents the independent editorial judgment of bersama.io and does not constitute official Parti Bersama Malaysia electoral communications."
   },

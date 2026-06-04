@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { setRequestLocale } from 'next-intl/server'
 import { agendaItems } from '@/data/agenda-seed'
 import { AgendaCard } from '@/components/cards/AgendaCard'
 import { buildMetadata } from '@/lib/metadata'
@@ -9,6 +10,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
   return buildMetadata({
     title: isMs ? '12 Agenda Bersama' : '12 Bersama Agenda',
@@ -22,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function AgendaListingPage({ params }: Props) {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://bersama.io'
 

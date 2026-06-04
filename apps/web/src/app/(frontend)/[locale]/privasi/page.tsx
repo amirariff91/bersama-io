@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { setRequestLocale } from 'next-intl/server'
 import { buildMetadata } from '@/lib/metadata'
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
   return buildMetadata({
     title: isMs ? 'Dasar Privasi (PDPA)' : 'Privacy Policy (PDPA)',
@@ -20,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PrivasiPage({ params }: Props) {
   const { locale } = await params
+  setRequestLocale(locale)
   const isMs = locale === 'ms'
 
   return (

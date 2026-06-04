@@ -18,6 +18,23 @@
     "about": "Tentang",
     "subscribe": "Langgan"
   },
+  "about": {
+    "title": "Tentang bersama.io",
+    "whatWeAre": "Apa Itu bersama.io",
+    "whatWeAreText": "bersama.io ialah platform penyokong tidak rasmi yang dikendalikan secara bebas untuk menghimpun berita, agenda dan pendirian berkaitan Parti Bersama Malaysia di satu tempat. Kami percaya kepada saluran maklumat yang telus, mudah difahami dan boleh dicapai oleh setiap rakyat. Platform ini dibina oleh penyokong, untuk penyokong — bebas dan berani.",
+    "disclaimerBox": "Penting: bersama.io ialah platform penyokong TIDAK RASMI. Kami tidak berkaitan dengan, tidak diuruskan oleh, dan tidak mewakili Parti Bersama Malaysia. Semua kandungan adalah pertimbangan editorial bebas kami sendiri.",
+    "shareLabel": "Kongsi halaman ini",
+    "rafizi": {
+      "name": "Rafizi Ramli",
+      "role": "Presiden, Parti Bersama Malaysia",
+      "bio": "Rafizi Ramli ialah ahli politik Malaysia yang mengetuai Parti Bersama Malaysia. Beliau dikenali atas advokasi terhadap ketelusan, akauntabiliti dan reformasi institusi awam, serta pendekatan berasaskan data dalam membentuk dasar."
+    },
+    "nikNazmi": {
+      "name": "Nik Nazmi Nik Ahmad",
+      "role": "Pemimpin Kanan, Parti Bersama Malaysia",
+      "bio": "Nik Nazmi Nik Ahmad ialah ahli politik Malaysia berpengalaman yang menyumbang kepada kepemimpinan Parti Bersama Malaysia, dengan tumpuan kepada isu alam sekitar, tadbir urus baik dan pembaharuan dasar."
+    }
+  },
   "hero": {
     "heading": "Suara Penyokong,\nBebas & Berani",
     "subheading": "Platform penyokong tidak rasmi Parti Bersama Malaysia. Berita, agenda, dan pendirian — semuanya di sini.",
@@ -64,8 +81,12 @@
   "johor": {
     "heading": "Pilihan Raya Negeri Johor",
     "subheading": "Perlawanan pertama Bersama — ikuti perkembangan terkini",
+    "heroHeading": "Pilihan Raya Negeri Johor",
+    "heroSubheading": "Perlawanan elektoral pertama Parti Bersama Malaysia. Ikuti keputusan, analisis kerusi utama dan kemaskini langsung di sini.",
     "cta": "Ikuti Perkembangan",
     "liveUpdate": "Kemaskini Langsung",
+    "liveBlogTitle": "Kemaskini Langsung",
+    "keySeatsTitle": "Kerusi Utama Dipantau",
     "results": "Keputusan",
     "disclaimer": "Liputan ini mencerminkan pertimbangan editorial bebas bersama.io dan bukan komunikasi pilihan raya rasmi Parti Bersama Malaysia."
   },

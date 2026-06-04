@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { setRequestLocale } from 'next-intl/server'
 import { agendaItems } from '@/data/agenda-seed'
 import { buildMetadata } from '@/lib/metadata'
 import { WhatsAppShareButton } from '@/components/ui/WhatsAppShareButton'
@@ -18,6 +19,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
+  setRequestLocale(locale)
   const item = agendaItems.find((a) => a.slug === slug)
   if (!item) return {}
   const isMs = locale === 'ms'
@@ -32,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function AgendaItemPage({ params }: Props) {
   const { locale, slug } = await params
+  setRequestLocale(locale)
   const item = agendaItems.find((a) => a.slug === slug)
   if (!item) notFound()
 

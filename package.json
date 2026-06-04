@@ -1,6 +1,10 @@
 {
   "name": "bersama-io",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
@@ -16,7 +20,11 @@
   },
   "engines": {
     "node": ">=20.0.0",
-    "pnpm": ">=9.0.0"
+    "bun": ">=1.2.0"
   },
-  "packageManager": "pnpm@9.0.0"
+  "trustedDependencies": [
+    "@parcel/watcher",
+    "@swc/core"
+  ],
+  "packageManager": "bun@1.2.18"
 }

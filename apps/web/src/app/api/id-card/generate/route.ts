@@ -1,3 +1,4 @@
+import type React from 'react'
 import { NextRequest, NextResponse } from 'next/server'
 import satori from 'satori'
 import sharp from 'sharp'
@@ -142,7 +143,7 @@ export async function POST(req: NextRequest) {
           },
         ],
       },
-    },
+    } as unknown as React.ReactNode,
     { width: 600, height: 380, fonts: [] }
   )
 

@@ -1,12 +1,14 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { UnofficialDisclaimer } from '@/components/ui/UnofficialDisclaimer'
 import { LiveBlog } from './liveblog'
 
 interface Props {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
-export async function generateMetadata({ params: { locale } }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('johor')
   return {
     title: `${t('heroHeading')} — bersama.io`,
@@ -14,7 +16,9 @@ export async function generateMetadata({ params: { locale } }: Props) {
   }
 }
 
-export default async function JohorPage({ params: { locale } }: Props) {
+export default async function JohorPage({ params }: Props) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('johor')
 
   const seats = [

@@ -4,7 +4,12 @@ import { createHash } from 'crypto'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazily construct Resend only when a key is configured — the constructor
+// throws on an empty key, which would break `next build` page-data collection.
+function getResend(): Resend | null {
+  const key = process.env.RESEND_API_KEY
+  return key ? new Resend(key) : null
+}
 
 // Rate limit: 3 subscribes per 5 minutes per IP
 const subRateLimitMap = new Map<string, { count: number; resetAt: number }>()
@@ -90,17 +95,20 @@ export async function POST(req: NextRequest) {
       console.error('[subscribe] PDPA record write failed:', pdpaErr)
     }
 
-    // Send welcome email via Resend
-    await resend.emails.send({
-      from: 'bersama.io <hello@bersama.io>',
-      to: email,
-      subject: 'Selamat datang ke bersama.io — Suara Penyokong, Bebas & Berani',
-      html: `
-        <h1>Terima kasih kerana melanggan bersama.io!</h1>
-        <p>Anda akan menerima kemaskini terkini tentang Parti Bersama Malaysia.</p>
-        <p style="font-size:12px;color:#666;">bersama.io adalah platform penyokong TIDAK RASMI. Kami tidak berkaitan dengan Parti Bersama Malaysia.</p>
-      `,
-    })
+    // Send welcome email via Resend (skipped when no key is configured)
+    const resend = getResend()
+    if (resend) {
+      await resend.emails.send({
+        from: 'bersama.io <hello@bersama.io>',
+        to: email,
+        subject: 'Selamat datang ke bersama.io — Suara Penyokong, Bebas & Berani',
+        html: `
+          <h1>Terima kasih kerana melanggan bersama.io!</h1>
+          <p>Anda akan menerima kemaskini terkini tentang Parti Bersama Malaysia.</p>
+          <p style="font-size:12px;color:#666;">bersama.io adalah platform penyokong TIDAK RASMI. Kami tidak berkaitan dengan Parti Bersama Malaysia.</p>
+        `,
+      })
+    }
 
     return NextResponse.json({ success: true })
   } catch (err) {

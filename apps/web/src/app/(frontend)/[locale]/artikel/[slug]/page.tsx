@@ -1,19 +1,22 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { notFound } from 'next/navigation'
+import { setRequestLocale } from 'next-intl/server'
 import { buildMetadata } from '@/lib/metadata'
 import { WhatsAppShareButton } from '@/components/ui/WhatsAppShareButton'
 
 interface Props {
-  params: { locale: string; slug: string }
+  params: Promise<{ locale: string; slug: string }>
 }
 
 export async function generateMetadata({ params }: Props) {
+  const { locale, slug } = await params
+  setRequestLocale(locale)
   const payload = await getPayload({ config: configPromise })
   const { docs } = await payload.find({
     collection: 'articles',
-    where: { slug: { equals: params.slug }, status: { equals: 'published' } },
-    locale: params.locale as 'ms' | 'en',
+    where: { slug: { equals: slug }, status: { equals: 'published' } },
+    locale: locale as 'ms' | 'en',
     limit: 1,
   })
   const article = docs[0]
@@ -21,7 +24,7 @@ export async function generateMetadata({ params }: Props) {
   return buildMetadata({
     title: String(article.title),
     description: String(article.excerpt || ''),
-    locale: params.locale as 'ms' | 'en',
+    locale: locale as 'ms' | 'en',
     slug: `artikel/${article.slug}`,
     type: 'article',
     publishedAt: article.publishedAt?.toString(),
@@ -30,17 +33,19 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function ArticlePage({ params }: Props) {
+  const { locale, slug } = await params
+  setRequestLocale(locale)
   const payload = await getPayload({ config: configPromise })
   const { docs } = await payload.find({
     collection: 'articles',
-    where: { slug: { equals: params.slug }, status: { equals: 'published' } },
-    locale: params.locale as 'ms' | 'en',
+    where: { slug: { equals: slug }, status: { equals: 'published' } },
+    locale: locale as 'ms' | 'en',
     limit: 1,
   })
   const article = docs[0]
   if (!article) notFound()
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/${params.locale}/artikel/${article.slug}`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/artikel/${article.slug}`
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
@@ -71,7 +76,7 @@ export default async function ArticlePage({ params }: Props) {
             dateModified: article.publishedAt ? String(article.publishedAt) : new Date().toISOString(),
             url: url,
             isAccessibleForFree: true,
-            inLanguage: params.locale === 'ms' ? 'ms-MY' : 'en-MY',
+            inLanguage: locale === 'ms' ? 'ms-MY' : 'en-MY',
           }),
         }}
       />
