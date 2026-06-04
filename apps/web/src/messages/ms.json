@@ -4,8 +4,13 @@
     "tagline": "Suara Penyokong, Bebas & Berani",
     "unofficial": "Platform penyokong tidak rasmi Parti Bersama Malaysia",
     "readMore": "Baca selanjutnya",
+    "readAt": "Baca di {source}",
+    "share": "Kongsi",
+    "shareIntro": "baca lebih lanjut di bersama.io",
     "shareWhatsApp": "Kongsi di WhatsApp",
     "backToHome": "Kembali ke laman utama",
+    "live": "Langsung",
+    "source": "Sumber",
     "loading": "Memuatkan...",
     "error": "Ralat berlaku"
   },
@@ -41,6 +46,17 @@
     "ctaNews": "Ikuti Berita Terkini",
     "ctaAgenda": "Baca 12 Agenda"
   },
+  "home": {
+    "leadLabel": "Berita Utama",
+    "latestLabel": "Berita Terkini",
+    "noNews": "Tiada berita terkini buat masa ini. Sumber kami dikemas kini setiap 15 minit.",
+    "agendaLabel": "Apa Pendirian Bersama",
+    "johorLabel": "Pilihan Raya Johor",
+    "idCardKicker": "Sebarkan",
+    "idCardTitle": "Kad Penyokong",
+    "idCardText": "Jana kad pengenalan penyokong anda dan kongsikannya.",
+    "idCardCta": "Jana Kad Saya"
+  },
   "subscribe": {
     "heading": "Dapatkan Kemaskini Terkini",
     "sectionTitle": "Dapatkan Kemaskini Terkini",
@@ -48,6 +64,7 @@
     "sectionSubtitle": "Langgan buletin kami untuk kemaskini Bersama terus ke e-mel anda.",
     "placeholder": "Alamat e-mel anda",
     "button": "Langgan Sekarang",
+    "loading": "Sedang langgan...",
     "consent": "Saya bersetuju data saya diproses oleh bersama.io dan pembekal perkhidmatan kami, termasuk pembekal di luar Malaysia, bagi tujuan menerima kemaskini berita.",
     "success": "Terima kasih! Semak e-mel anda untuk pengesahan.",
     "error": "Ralat berlaku. Cuba lagi."
@@ -87,12 +104,16 @@
     "liveUpdate": "Kemaskini Langsung",
     "liveBlogTitle": "Kemaskini Langsung",
     "keySeatsTitle": "Kerusi Utama Dipantau",
+    "incumbentLabel": "Pemegang",
     "results": "Keputusan",
     "disclaimer": "Liputan ini mencerminkan pertimbangan editorial bebas bersama.io dan bukan komunikasi pilihan raya rasmi Parti Bersama Malaysia."
   },
   "positions": {
     "heading": "Pendirian Bersama",
     "subheading": "Rekod rasmi pendirian Parti Bersama Malaysia terhadap isu-isu semasa",
+    "emptyHeading": "Rekod Pendirian Akan Datang",
+    "emptyText": "Kami sedang mendokumentasikan pendirian parti berdasarkan kenyataan rasmi, Hansard Parlimen dan sumber media. Semak semula tidak lama lagi.",
+    "viewSource": "Lihat sumber",
     "evidenceTypes": {
       "statement": "Kenyataan Rasmi",
       "hansard": "Hansard Parlimen",
@@ -101,10 +122,25 @@
       "interview": "Temu Bual"
     }
   },
+  "kad": {
+    "title": "Kad Penyokong",
+    "description": "Jana kad pengenalan penyokong anda. Hanya nama diperlukan — tiada nombor IC dikumpul.",
+    "placeholder": "Nama anda",
+    "generate": "Jana Kad Saya",
+    "generating": "Menjana...",
+    "download": "Muat Turun",
+    "share": "Kongsi WhatsApp",
+    "regenerate": "Jana semula",
+    "error": "Tidak dapat menjana kad. Cuba lagi."
+  },
   "footer": {
     "unofficial": "bersama.io adalah platform penyokong TIDAK RASMI. Kami tidak berkaitan dengan Parti Bersama Malaysia.",
     "rights": "Semua hak terpelihara",
     "privacy": "Dasar Privasi",
-    "contact": "Hubungi Kami"
+    "contact": "Hubungi Kami",
+    "sectionsLabel": "Bahagian",
+    "linksLabel": "Pautan",
+    "officialSite": "Laman Rasmi Parti",
+    "editor": "Penyunting bertanggungjawab & pengawal data PDPA: Hazim"
   }
 }
