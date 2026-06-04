@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { agendaItems } from '@/data/agenda-seed'
 import { AgendaCard } from '@/components/cards/AgendaCard'
+import { PageHeader } from '@/components/layout/PageHeader'
 import { buildMetadata } from '@/lib/metadata'
 
 interface Props {
@@ -26,45 +27,27 @@ export default async function AgendaListingPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const isMs = locale === 'ms'
+  const t = await getTranslations('agenda')
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://bersama.io'
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <section className="bg-bersama-blue text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-bersama-yellow text-sm font-semibold uppercase tracking-widest mb-3">
-            {isMs ? 'Dasar & Agenda' : 'Policy & Agenda'}
-          </p>
-          <h1 className="text-3xl md:text-5xl font-bold mb-4">
-            {isMs ? '12 Agenda Bersama' : '12 Bersama Agenda'}
-          </h1>
-          <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-            {isMs
-              ? 'Dasar konkrit Parti Bersama Malaysia untuk membina negara yang lebih adil dan makmur.'
-              : 'Concrete policies from Parti Bersama Malaysia to build a more just and prosperous nation.'}
-          </p>
-        </div>
-      </section>
-
-      {/* Disclaimer */}
-      <div className="bg-bersama-yellow/10 border-b border-bersama-yellow/30 py-2 px-4 text-center">
-        <p className="text-xs text-editorial-dark">
-          {isMs
-            ? '⚠️ bersama.io adalah platform penyokong TIDAK RASMI. Kami tidak berkaitan dengan Parti Bersama Malaysia.'
-            : '⚠️ bersama.io is an UNOFFICIAL supporter platform. We are not affiliated with Parti Bersama Malaysia.'}
-        </p>
-      </div>
-
-      {/* Agenda Grid */}
-      <section className="max-w-4xl mx-auto px-4 py-12">
-        <div className="grid gap-4 md:gap-6">
+    <>
+      <PageHeader
+        kicker={isMs ? 'Dasar & Agenda' : 'Policy & Agenda'}
+        title={t('heading')}
+        deck={
+          isMs
+            ? 'Dasar konkrit Parti Bersama Malaysia untuk membina negara yang lebih adil dan makmur.'
+            : 'Concrete policies from Parti Bersama Malaysia to build a more just and prosperous nation.'
+        }
+      />
+      <section className="container-content py-12">
+        <div className="grid gap-x-10 gap-y-6 md:grid-cols-2">
           {agendaItems.map((item) => (
             <AgendaCard
               key={item.slug}
               number={item.number}
               slug={item.slug}
-              icon={item.icon}
               title={isMs ? item.titleMs : item.titleEn}
               summary={isMs ? item.summaryMs : item.summaryEn}
               locale={locale}
@@ -73,6 +56,6 @@ export default async function AgendaListingPage({ params }: Props) {
           ))}
         </div>
       </section>
-    </main>
+    </>
   )
 }

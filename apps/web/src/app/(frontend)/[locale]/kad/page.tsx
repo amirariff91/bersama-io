@@ -1,8 +1,13 @@
 'use client'
+
 import { useState } from 'react'
 import Image from 'next/image'
+import { useLocale, useTranslations } from 'next-intl'
 
 export default function KadPage() {
+  const t = useTranslations('kad')
+  const tHome = useTranslations('home')
+  const locale = useLocale()
   const [name, setName] = useState('')
   const [cardUrl, setCardUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -16,70 +21,89 @@ export default function KadPage() {
       const res = await fetch('/api/id-card/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, locale: 'ms' }),
+        body: JSON.stringify({ name, locale }),
       })
       if (!res.ok) throw new Error()
-      const data = await res.json() as { url: string }
+      const data = (await res.json()) as { url: string }
       setCardUrl(data.url)
     } catch {
-      setError('Gagal menjana kad. Cuba lagi.')
+      setError(t('error'))
     } finally {
       setLoading(false)
     }
   }
 
-  return (
-    <main className="max-w-xl mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold text-bersama-blue mb-2">Kad Penyokong Bersama</h1>
-      <p className="text-gray-600 mb-8">Jana kad penyokong anda dan kongsi di WhatsApp atau Instagram.</p>
+  const shareText =
+    locale === 'ms'
+      ? `Saya penyokong Bersama! Lihat kad saya: ${cardUrl} — Jana kad anda di bersama.io/kad`
+      : `I'm a Bersama supporter! See my card: ${cardUrl} — Make yours at bersama.io/kad`
 
-      {!cardUrl ? (
-        <div className="space-y-4">
-          <input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            placeholder="Nama anda"
-            maxLength={50}
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-bersama-blue outline-none"
-          />
-          <button
-            onClick={generate}
-            disabled={!name.trim() || loading}
-            className="w-full bg-bersama-blue text-white py-3 rounded-lg font-semibold hover:bg-bersama-blue-light disabled:opacity-50 transition-colors"
-          >
-            {loading ? 'Menjana...' : 'Jana Kad Saya'}
-          </button>
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+  return (
+    <>
+      <header className="border-b-2 border-ink bg-paper">
+        <div className="container-content max-w-xl py-10">
+          <p className="kicker">{tHome('idCardKicker')}</p>
+          <h1 className="mt-3 font-display text-headline font-black tracking-tight text-ink">
+            {t('title')}
+          </h1>
+          <p className="mt-3 text-pretty text-deck text-ink-muted">{t('description')}</p>
         </div>
-      ) : (
-        <div className="space-y-4">
-          <Image src={cardUrl} alt="Kad Penyokong Bersama" width={600} height={380} className="rounded-xl w-full" />
-          <div className="flex gap-3">
-            <a
-              href={cardUrl}
-              download="bersama-supporter-card.png"
-              className="flex-1 bg-bersama-yellow text-bersama-blue text-center py-3 rounded-lg font-semibold hover:bg-bersama-yellow-light transition-colors"
+      </header>
+
+      <div className="container-content max-w-xl py-12">
+        {!cardUrl ? (
+          <div className="space-y-4">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={t('placeholder')}
+              maxLength={50}
+              className="input-base"
+            />
+            <button
+              onClick={generate}
+              disabled={!name.trim() || loading}
+              className="btn-ink w-full"
             >
-              Muat Turun
-            </a>
-            <a
-              href={`https://wa.me/?text=${encodeURIComponent(`Saya penyokong Bersama! Lihat kad saya: ${cardUrl} — Jana kad anda di bersama.io/kad`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 bg-green-500 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
-            >
-              Kongsi WhatsApp
-            </a>
+              {loading ? t('generating') : t('generate')}
+            </button>
+            {error ? <p className="text-sm font-medium text-bersama-red">{error}</p> : null}
           </div>
-          <button
-            onClick={() => { setCardUrl(null); setName('') }}
-            className="text-sm text-gray-400 hover:text-gray-600 w-full text-center"
-          >
-            Jana semula
-          </button>
-        </div>
-      )}
-    </main>
+        ) : (
+          <div className="space-y-4">
+            <Image
+              src={cardUrl}
+              alt={t('title')}
+              width={600}
+              height={380}
+              className="w-full border border-rule"
+            />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <a href={cardUrl} download="bersama-supporter-card.png" className="btn-accent flex-1">
+                {t('download')}
+              </a>
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ink flex-1"
+              >
+                {t('share')}
+              </a>
+            </div>
+            <button
+              onClick={() => {
+                setCardUrl(null)
+                setName('')
+              }}
+              className="w-full text-center font-display text-kicker font-semibold uppercase tracking-[0.1em] text-ink-faint hover:text-ink"
+            >
+              {t('regenerate')}
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   )
 }

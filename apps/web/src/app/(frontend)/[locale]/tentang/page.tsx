@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { UnofficialDisclaimer } from '@/components/ui/UnofficialDisclaimer'
 import { WhatsAppShareButton } from '@/components/ui/WhatsAppShareButton'
+import { PageHeader } from '@/components/layout/PageHeader'
 
 interface Props {
   params: Promise<{ locale: string }>
@@ -21,76 +21,60 @@ export default async function TentangPage({ params }: Props) {
   setRequestLocale(locale)
   const t = await getTranslations('about')
 
-  const pageUrl =
-    typeof process !== 'undefined'
-      ? `https://bersama.io/${locale}/tentang`
-      : `/${locale}/tentang`
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://bersama.io'
+  const pageUrl = `${serverUrl}/${locale}/tentang`
+
+  const people = [
+    { initials: 'RR', name: t('rafizi.name'), role: t('rafizi.role'), bio: t('rafizi.bio') },
+    { initials: 'NN', name: t('nikNazmi.name'), role: t('nikNazmi.role'), bio: t('nikNazmi.bio') },
+  ]
 
   return (
-    <main className="min-h-screen flex flex-col">
-      <UnofficialDisclaimer locale={locale} />
+    <>
+      <PageHeader
+        kicker={locale === 'ms' ? 'Tentang Kami' : 'About Us'}
+        title={t('title')}
+      />
 
-      {/* Hero */}
-      <section className="bg-bersama-blue text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl font-display font-bold">{t('title')}</h1>
-        </div>
-      </section>
-
-      <div className="max-w-4xl mx-auto px-4 py-12 space-y-12 w-full">
+      <div className="container-content max-w-3xl py-12">
         {/* What is bersama.io */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-bersama-blue mb-4">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
             {t('whatWeAre')}
           </h2>
-          <p className="text-gray-700 leading-relaxed">{t('whatWeAreText')}</p>
+          <p className="mt-4 leading-relaxed text-ink-muted">{t('whatWeAreText')}</p>
 
-          {/* Important disclaimer box */}
-          <div className="mt-6 bg-bersama-yellow/20 border-l-4 border-bersama-yellow rounded-r-lg p-4">
-            <p className="text-sm font-semibold text-bersama-blue">{t('disclaimerBox')}</p>
+          <div className="mt-6 border-l-2 border-bersama-yellow bg-paper-dim p-4">
+            <p className="text-sm font-semibold text-ink">{t('disclaimerBox')}</p>
           </div>
         </section>
 
-        {/* Rafizi Ramli */}
-        <section className="border-t border-gray-100 pt-10">
-          <div className="flex flex-col sm:flex-row gap-6">
-            <div className="shrink-0 w-20 h-20 rounded-full bg-bersama-blue/10 flex items-center justify-center">
-              <span className="text-2xl font-display font-bold text-bersama-blue">RR</span>
+        {/* Leadership */}
+        {people.map((person) => (
+          <section key={person.initials} className="mt-10 border-t border-rule pt-10">
+            <div className="flex flex-col gap-6 sm:flex-row">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center border border-ink bg-paper-dim">
+                <span className="font-display text-2xl font-black text-bersama-blue">
+                  {person.initials}
+                </span>
+              </div>
+              <div>
+                <h2 className="font-display text-xl font-bold tracking-tight text-ink">
+                  {person.name}
+                </h2>
+                <p className="kicker-muted mt-1">{person.role}</p>
+                <p className="mt-3 leading-relaxed text-ink-muted">{person.bio}</p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-display font-bold text-bersama-blue">
-                {t('rafizi.name')}
-              </h2>
-              <p className="text-sm font-medium text-bersama-yellow-dark text-gray-500 mb-3">
-                {t('rafizi.role')}
-              </p>
-              <p className="text-gray-700 leading-relaxed">{t('rafizi.bio')}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Nik Nazmi */}
-        <section className="border-t border-gray-100 pt-10">
-          <div className="flex flex-col sm:flex-row gap-6">
-            <div className="shrink-0 w-20 h-20 rounded-full bg-bersama-blue/10 flex items-center justify-center">
-              <span className="text-2xl font-display font-bold text-bersama-blue">NN</span>
-            </div>
-            <div>
-              <h2 className="text-xl font-display font-bold text-bersama-blue">
-                {t('nikNazmi.name')}
-              </h2>
-              <p className="text-sm font-medium text-gray-500 mb-3">{t('nikNazmi.role')}</p>
-              <p className="text-gray-700 leading-relaxed">{t('nikNazmi.bio')}</p>
-            </div>
-          </div>
-        </section>
+          </section>
+        ))}
 
         {/* Share */}
-        <section className="border-t border-gray-100 pt-10 flex items-center gap-4">
-          <span className="text-sm text-gray-600">{t('shareLabel')}:</span>
+        <section className="mt-10 flex items-center gap-4 border-t border-rule pt-10">
+          <span className="text-sm text-ink-muted">{t('shareLabel')}:</span>
           <WhatsAppShareButton title={t('title')} url={pageUrl} />
         </section>
       </div>
-    </main>
+    </>
   )
 }
