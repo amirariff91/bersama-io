@@ -1,4 +1,4 @@
-interface RssItem {
+export interface RssItem {
   title: string
   excerpt: string // 2-sentence max — copyright compliant
   sourceUrl: string

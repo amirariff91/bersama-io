@@ -1,36 +1,51 @@
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 import { WhatsAppShareButton } from '@/components/ui/WhatsAppShareButton'
 
 interface AgendaCardProps {
   number: number
   slug: string
-  icon: string
+  icon?: string // deprecated — emoji no longer rendered
   title: string
   summary: string
   locale: string
   serverUrl: string
 }
 
-export function AgendaCard({ number, slug, icon, title, summary, locale, serverUrl }: AgendaCardProps) {
+export async function AgendaCard({
+  number,
+  slug,
+  title,
+  summary,
+  locale,
+  serverUrl,
+}: AgendaCardProps) {
+  const t = await getTranslations('common')
   const url = `${serverUrl}/${locale}/agenda/${slug}`
+  const readMore = t('readMore')
+
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 hover:border-bersama-blue hover:shadow-md transition-all">
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-10 h-10 bg-bersama-blue text-bersama-yellow rounded-full flex items-center justify-center font-bold text-sm">
-          {number}
-        </div>
+    <article className="group border-t border-rule pt-5">
+      <div className="flex items-baseline gap-4">
+        <span className="font-display text-3xl font-black leading-none text-bersama-blue tabular-nums">
+          {String(number).padStart(2, '0')}
+        </span>
         <div className="flex-1">
-          <div className="text-2xl mb-2">{icon}</div>
-          <h3 className="font-semibold text-editorial-dark text-sm mb-2">{title}</h3>
-          <p className="text-gray-600 text-sm leading-relaxed">{summary}</p>
-          <div className="flex items-center gap-3 mt-4">
-            <Link href={`/${locale}/agenda/${slug}`} className="text-bersama-blue text-sm font-medium hover:underline">
-              Baca selanjutnya →
+          <Link href={`/${locale}/agenda/${slug}`} className="story-link">
+            <h3 className="story-headline text-balance text-base leading-snug">{title}</h3>
+          </Link>
+          <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{summary}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <Link
+              href={`/${locale}/agenda/${slug}`}
+              className="font-display text-kicker font-semibold uppercase tracking-[0.1em] text-bersama-blue hover:text-bersama-blue-light"
+            >
+              {readMore} →
             </Link>
             <WhatsAppShareButton title={title} url={url} />
           </div>
         </div>
       </div>
-    </div>
+    </article>
   )
 }
