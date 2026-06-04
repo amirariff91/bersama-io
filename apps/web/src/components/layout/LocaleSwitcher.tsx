@@ -17,27 +17,29 @@ export function LocaleSwitcher() {
     router.push(segments.join('/') || `/${newLocale}`)
   }
 
+  const base =
+    'px-2 py-0.5 font-display text-kicker uppercase tracking-[0.1em] font-semibold transition-colors'
+  const active = 'bg-bersama-blue text-paper'
+  const idle = 'text-ink-faint hover:text-ink'
+
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1.5">
       <button
         onClick={() => switchLocale('ms')}
         aria-label="Tukar ke Bahasa Malaysia"
-        className={`px-2 py-1 text-xs font-semibold rounded transition-colors ${
-          currentLocale === 'ms'
-            ? 'bg-bersama-yellow text-bersama-blue'
-            : 'text-gray-300 hover:text-white'
-        }`}
+        aria-pressed={currentLocale === 'ms'}
+        className={`${base} ${currentLocale === 'ms' ? active : idle}`}
       >
         BM
       </button>
+      <span className="text-ink-faint" aria-hidden="true">
+        /
+      </span>
       <button
         onClick={() => switchLocale('en')}
         aria-label="Switch to English"
-        className={`px-2 py-1 text-xs font-semibold rounded transition-colors ${
-          currentLocale === 'en'
-            ? 'bg-bersama-yellow text-bersama-blue'
-            : 'text-gray-300 hover:text-white'
-        }`}
+        aria-pressed={currentLocale === 'en'}
+        className={`${base} ${currentLocale === 'en' ? active : idle}`}
       >
         EN
       </button>

@@ -6,7 +6,11 @@ import { locales } from '@/i18n'
 import { Analytics } from '@/components/analytics/Analytics'
 import { CookieConsent } from '@/components/analytics/CookieConsent'
 import { OneSignalInit } from '@/components/analytics/OneSignalInit'
-import '../../globals.css'
+import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
+import { UnofficialDisclaimer } from '@/components/ui/UnofficialDisclaimer'
+import { fontSans, fontDisplay } from '../../fonts'
+import '../../../styles/design-system.css'
 
 export const metadata: Metadata = {
   title: 'bersama.io — Suara Penyokong, Bebas & Berani',
@@ -33,9 +37,14 @@ export default async function LocaleLayout({
   setRequestLocale(locale)
 
   return (
-    <html lang={locale}>
-      <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+    <html lang={locale} className={`${fontSans.variable} ${fontDisplay.variable}`}>
+      <body className="flex min-h-screen flex-col">
+        <NextIntlClientProvider>
+          <UnofficialDisclaimer locale={locale} />
+          <Navbar locale={locale} />
+          <main className="flex-1">{children}</main>
+          <Footer locale={locale} />
+        </NextIntlClientProvider>
         <Analytics />
         <CookieConsent />
         <OneSignalInit />
