@@ -39,6 +39,8 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+# curl for the container healthcheck (Coolify probes with curl/wget)
+RUN apk add --no-cache curl
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 # Monorepo standalone layout: server.js lives under apps/web/
@@ -51,5 +53,5 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 # Health check for Coolify
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD wget -qO- http://localhost:3000/api/health || exit 1
+  CMD curl -fsS http://localhost:3000/api/health || exit 1
 CMD ["node", "apps/web/server.js"]
