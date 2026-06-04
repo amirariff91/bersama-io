@@ -6,7 +6,8 @@ RUN npm install -g pnpm@9
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/ ./packages/
-RUN pnpm install --frozen-lockfile
+# Install ALL deps (including devDeps) — needed for Next.js build
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Stage 2: builder
 FROM node:20-alpine AS builder
@@ -15,7 +16,7 @@ RUN npm install -g pnpm@9
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=production
+# NOTE: Do NOT set NODE_ENV=production here — pnpm respects it and skips devDeps
 # Build args for public env vars (needed at build time)
 ARG NEXT_PUBLIC_SERVER_URL
 ARG NEXT_PUBLIC_GA4_ID
