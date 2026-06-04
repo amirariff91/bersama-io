@@ -17,7 +17,7 @@ export async function generateMetadata({ params: { locale } }: Props) {
 
 export default async function HomePage({ params: { locale } }: Props) {
   const t = await getTranslations('hero')
-  const tJohor = await getTranslations('johorBanner')
+  const tJohor = await getTranslations('johor')
   const tAgenda = await getTranslations('agenda')
   const tSubscribe = await getTranslations('subscribe')
 

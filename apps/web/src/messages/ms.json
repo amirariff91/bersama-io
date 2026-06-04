@@ -26,7 +26,9 @@
   },
   "subscribe": {
     "heading": "Dapatkan Kemaskini Terkini",
+    "sectionTitle": "Dapatkan Kemaskini Terkini",
     "subheading": "Langgan buletin kami untuk kemaskini Bersama terus ke e-mel anda.",
+    "sectionSubtitle": "Langgan buletin kami untuk kemaskini Bersama terus ke e-mel anda.",
     "placeholder": "Alamat e-mel anda",
     "button": "Langgan Sekarang",
     "consent": "Saya bersetuju data saya diproses oleh bersama.io dan pembekal perkhidmatan kami, termasuk pembekal di luar Malaysia, bagi tujuan menerima kemaskini berita.",
@@ -35,13 +37,34 @@
   },
   "agenda": {
     "heading": "12 Agenda Bersama",
+    "sectionTitle": "12 Agenda Bersama",
     "subheading": "Penjelasan ringkas setiap agenda dalam bahasa mudah",
     "itemPrefix": "Agenda",
-    "relatedNews": "Berita Berkaitan"
+    "relatedNews": "Berita Berkaitan",
+    "viewAll": "Lihat Semua 12 Agenda",
+    "items": [
+      {
+        "title": "Kedaulatan & Kebebasan",
+        "summary": "Mempertahankan kedaulatan Malaysia dan kebebasan rakyat dalam semua aspek kehidupan."
+      },
+      {
+        "title": "Ekonomi Inklusif",
+        "summary": "Membina ekonomi yang memberi manfaat kepada semua lapisan masyarakat tanpa diskriminasi."
+      },
+      {
+        "title": "Pendidikan Berkualiti",
+        "summary": "Memastikan setiap rakyat Malaysia mendapat akses kepada pendidikan yang berkualiti dan berpatutan."
+      },
+      {
+        "title": "Tadbir Urus Bersih",
+        "summary": "Memperkukuh institusi awam dan memastikan kerajaan yang telus, akauntabel dan bebas rasuah."
+      }
+    ]
   },
   "johor": {
     "heading": "Pilihan Raya Negeri Johor",
     "subheading": "Perlawanan pertama Bersama — ikuti perkembangan terkini",
+    "cta": "Ikuti Perkembangan",
     "liveUpdate": "Kemaskini Langsung",
     "results": "Keputusan",
     "disclaimer": "Liputan ini mencerminkan pertimbangan editorial bebas bersama.io dan bukan komunikasi pilihan raya rasmi Parti Bersama Malaysia."

@@ -26,7 +26,9 @@
   },
   "subscribe": {
     "heading": "Get the Latest Updates",
+    "sectionTitle": "Get the Latest Updates",
     "subheading": "Subscribe to our newsletter for Bersama updates delivered straight to your inbox.",
+    "sectionSubtitle": "Subscribe to our newsletter for Bersama updates delivered straight to your inbox.",
     "placeholder": "Your email address",
     "button": "Subscribe Now",
     "consent": "I consent to my data being processed by bersama.io and its service providers, including providers outside Malaysia, for the purpose of receiving news updates.",
@@ -35,13 +37,34 @@
   },
   "agenda": {
     "heading": "12-Point Bersama Agenda",
+    "sectionTitle": "12-Point Bersama Agenda",
     "subheading": "A plain-language summary of each agenda item",
     "itemPrefix": "Agenda",
-    "relatedNews": "Related News"
+    "relatedNews": "Related News",
+    "viewAll": "View All 12 Agenda Items",
+    "items": [
+      {
+        "title": "Sovereignty & Freedom",
+        "summary": "Defending Malaysia's sovereignty and the freedoms of its people in all aspects of life."
+      },
+      {
+        "title": "Inclusive Economy",
+        "summary": "Building an economy that benefits all segments of society without discrimination."
+      },
+      {
+        "title": "Quality Education",
+        "summary": "Ensuring every Malaysian has access to quality and affordable education."
+      },
+      {
+        "title": "Clean Governance",
+        "summary": "Strengthening public institutions and ensuring a transparent, accountable, and corruption-free government."
+      }
+    ]
   },
   "johor": {
     "heading": "Johor State Election",
     "subheading": "Bersama's first electoral test — follow the latest developments",
+    "cta": "Follow Updates",
     "liveUpdate": "Live Updates",
     "results": "Results",
     "disclaimer": "This election coverage represents the independent editorial judgment of bersama.io and does not constitute official Parti Bersama Malaysia electoral communications."
