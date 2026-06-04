@@ -1,5 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { UnofficialDisclaimer } from '@/components/ui/UnofficialDisclaimer'
 import { LiveBlog } from './liveblog'
 
 interface Props {
@@ -20,84 +19,79 @@ export default async function JohorPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations('johor')
+  const tCommon = await getTranslations('common')
+  const isMs = locale === 'ms'
 
   const seats = [
-    { name: 'Pulai Sebatang', status: locale === 'ms' ? 'Sasaran' : 'Target', incumbent: 'BN' },
-    { name: 'Skudai', status: locale === 'ms' ? 'Sasaran' : 'Target', incumbent: 'PKR' },
-    { name: 'Johor Jaya', status: locale === 'ms' ? 'Pertahan' : 'Hold', incumbent: 'Bersama' },
-    { name: 'Permas', status: locale === 'ms' ? 'Sasaran' : 'Target', incumbent: 'BN' },
-    { name: 'Kempas', status: locale === 'ms' ? 'Pantau' : 'Watch', incumbent: 'BN' },
-    { name: 'Mengkibol', status: locale === 'ms' ? 'Sasaran' : 'Target', incumbent: 'MCA' },
+    { name: 'Pulai Sebatang', status: isMs ? 'Sasaran' : 'Target', incumbent: 'BN' },
+    { name: 'Skudai', status: isMs ? 'Sasaran' : 'Target', incumbent: 'PKR' },
+    { name: 'Johor Jaya', status: isMs ? 'Pertahan' : 'Hold', incumbent: 'Bersama' },
+    { name: 'Permas', status: isMs ? 'Sasaran' : 'Target', incumbent: 'BN' },
+    { name: 'Kempas', status: isMs ? 'Pantau' : 'Watch', incumbent: 'BN' },
+    { name: 'Mengkibol', status: isMs ? 'Sasaran' : 'Target', incumbent: 'MCA' },
   ]
 
+  // Full literal class strings (purge-safe lookup).
   const statusColour: Record<string, string> = {
-    Sasaran: 'bg-blue-100 text-blue-800',
-    Target: 'bg-blue-100 text-blue-800',
-    Pertahan: 'bg-green-100 text-green-800',
-    Hold: 'bg-green-100 text-green-800',
-    Pantau: 'bg-amber-100 text-amber-800',
-    Watch: 'bg-amber-100 text-amber-800',
+    Sasaran: 'border border-bersama-blue text-bersama-blue',
+    Target: 'border border-bersama-blue text-bersama-blue',
+    Pertahan: 'bg-bersama-blue text-paper',
+    Hold: 'bg-bersama-blue text-paper',
+    Pantau: 'border border-bersama-red text-bersama-red',
+    Watch: 'border border-bersama-red text-bersama-red',
   }
 
   return (
-    <main className="min-h-screen flex flex-col">
-      <UnofficialDisclaimer locale={locale} />
-
-      {/* Hero */}
-      <section className="bg-bersama-blue text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-bersama-yellow text-sm font-semibold uppercase tracking-widest mb-3">
-            🗳️ Pilihan Raya Negeri Johor
-          </p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold">
+    <>
+      {/* Header — live, dark band */}
+      <header className="border-b-2 border-ink bg-ink text-paper">
+        <div className="container-content py-12">
+          <span className="tag-live">
+            <span className="h-1.5 w-1.5 rounded-full bg-white" aria-hidden="true" />
+            {tCommon('live')}
+          </span>
+          <h1 className="mt-4 text-balance font-display text-headline font-black tracking-tight text-paper">
             {t('heroHeading')}
           </h1>
-          <p className="mt-4 text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 max-w-2xl text-pretty text-deck text-paper/75">
             {t('heroSubheading')}
           </p>
-        </div>
-      </section>
-
-      {/* Electoral disclaimer */}
-      <section className="bg-gray-50 border-b border-gray-200 py-4 px-4">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-xs text-gray-500 text-center leading-relaxed">
-            ⚠️ {t('disclaimer')}
+          <p className="mt-5 max-w-2xl border-t border-white/15 pt-4 text-xs leading-relaxed text-paper/60">
+            {t('disclaimer')}
           </p>
         </div>
-      </section>
+      </header>
 
-      <div className="max-w-4xl mx-auto px-4 py-10 space-y-12 w-full">
+      <div className="container-content max-w-4xl space-y-12 py-12">
         {/* Live blog */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-bersama-blue mb-6">
-            {t('liveBlogTitle')}
-          </h2>
-          <LiveBlog />
+          <h2 className="kicker-live">{t('liveBlogTitle')}</h2>
+          <div className="mt-4">
+            <LiveBlog locale={locale} />
+          </div>
         </section>
 
-        {/* Key seats grid */}
-        <section className="border-t border-gray-100 pt-10">
-          <h2 className="text-2xl font-display font-bold text-bersama-blue mb-6">
+        {/* Key seats */}
+        <section className="border-t-2 border-ink pt-10">
+          <h2 className="font-display text-2xl font-black tracking-tight text-ink">
             {t('keySeatsTitle')}
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {seats.map(seat => (
-              <div
-                key={seat.name}
-                className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col gap-2"
-              >
-                <h3 className="font-semibold text-bersama-blue">{seat.name}</h3>
-                <div className="flex items-center gap-2">
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {seats.map((seat) => (
+              <div key={seat.name} className="border-t border-rule pt-4">
+                <h3 className="font-display text-lg font-bold tracking-tight text-ink">
+                  {seat.name}
+                </h3>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
                   <span
-                    className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                      statusColour[seat.status] ?? 'bg-gray-100 text-gray-700'
+                    className={`inline-flex items-center px-2 py-0.5 font-display text-kicker font-semibold uppercase tracking-[0.1em] ${
+                      statusColour[seat.status] ?? 'border border-rule text-ink-muted'
                     }`}
                   >
                     {seat.status}
                   </span>
-                  <span className="text-xs text-gray-500">
-                    {locale === 'ms' ? 'Pemegang:' : 'Incumbent:'} {seat.incumbent}
+                  <span className="text-xs text-ink-faint">
+                    {t('incumbentLabel')}: {seat.incumbent}
                   </span>
                 </div>
               </div>
@@ -105,6 +99,6 @@ export default async function JohorPage({ params }: Props) {
           </div>
         </section>
       </div>
-    </main>
+    </>
   )
 }

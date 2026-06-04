@@ -1,0 +1,185 @@
+/* ==========================================================================
+   bersama.io — Editorial Design System
+   Ink-on-paper civic news portal. Brand blue/yellow as accents; red for live.
+   Fonts are self-hosted via next/font (see src/app/fonts.ts) — no CDN import.
+   ========================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --------------------------------------------------------------------------
+   Brand tokens (colours mirror tailwind.config.ts for raw-CSS use)
+   -------------------------------------------------------------------------- */
+:root {
+  --color-bersama-blue: #082448;
+  --color-bersama-blue-light: #1a3d6b;
+  --color-bersama-yellow: #e6d44a;
+  --color-bersama-red: #c8102e;
+
+  --color-paper: #faf8f3;
+  --color-paper-dim: #f1ede4;
+  --color-ink: #1a1a1a;
+  --color-ink-muted: #5a5751;
+  --color-rule: #e2dcd0;
+
+  --max-width-content: 1200px;
+  --max-width-article: 680px;
+  --transition-base: 150ms ease-in-out;
+}
+
+/* --------------------------------------------------------------------------
+   Base — ink-on-paper typography
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight text-ink;
+  }
+
+  a {
+    @apply transition-colors duration-150;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-bersama-blue ring-offset-2 ring-offset-paper;
+  }
+
+  ::selection {
+    background-color: var(--color-bersama-yellow);
+    color: var(--color-bersama-blue);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Components — editorial primitives
+   -------------------------------------------------------------------------- */
+@layer components {
+  /* --- Layout containers --- */
+  .container-content {
+    @apply max-w-content mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .container-article {
+    @apply max-w-article mx-auto px-4 sm:px-6;
+  }
+
+  /* --- Kickers / section labels (grotesk, uppercase, tracked) --- */
+  .kicker {
+    @apply inline-block font-display font-semibold uppercase text-kicker tracking-[0.14em] text-bersama-blue;
+  }
+  .kicker-live {
+    @apply kicker text-bersama-red;
+  }
+  .kicker-muted {
+    @apply kicker text-ink-muted;
+  }
+
+  /* --- Dateline / metadata row --- */
+  .dateline {
+    @apply font-display uppercase tracking-[0.12em] text-byline text-ink-muted;
+  }
+
+  /* --- Rules (newspaper hairlines + masthead dividers) --- */
+  .rule-hairline {
+    @apply border-t border-rule;
+  }
+  .rule-thick {
+    @apply border-t-2 border-ink;
+  }
+  .rule-accent {
+    @apply border-t-2 border-bersama-yellow;
+  }
+
+  /* --- Tags --- */
+  .tag-live {
+    @apply inline-flex items-center gap-1.5 bg-bersama-red text-white font-display font-bold uppercase text-kicker tracking-[0.1em] px-2 py-1;
+  }
+  .tag-agenda {
+    @apply inline-flex items-center bg-bersama-yellow text-bersama-blue font-display font-semibold uppercase text-kicker tracking-[0.1em] px-2 py-0.5;
+  }
+  .tag-source {
+    @apply inline-flex items-center font-display font-semibold uppercase text-kicker tracking-[0.1em] text-bersama-blue;
+  }
+
+  /* --- Story headline link (hover ink → blue) --- */
+  .story-headline {
+    @apply font-display font-bold tracking-tight text-ink transition-colors duration-150;
+  }
+  .group:hover .story-headline,
+  .story-link:hover .story-headline {
+    @apply text-bersama-blue;
+  }
+
+  /* --- Inline editorial link --- */
+  .link-editorial {
+    @apply font-display font-semibold text-bersama-blue underline decoration-bersama-yellow decoration-2 underline-offset-4 hover:decoration-bersama-blue;
+  }
+
+  /* --- Buttons (squared, editorial — not pills) --- */
+  .btn-ink {
+    @apply inline-flex items-center justify-center gap-2 bg-ink text-paper font-display font-semibold px-5 py-2.5 hover:bg-bersama-blue transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 bg-bersama-yellow text-bersama-blue font-display font-bold px-5 py-2.5 hover:bg-bersama-yellow-light transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border border-ink text-ink font-display font-semibold px-5 py-2.5 hover:bg-ink hover:text-paper transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* --- Form input (squared, hairline) --- */
+  .input-base {
+    @apply block w-full border border-rule bg-white px-4 py-2.5 text-ink placeholder-ink-faint focus:border-bersama-blue transition-colors duration-150;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Article body — manual editorial prose (no @tailwindcss/typography dep)
+   -------------------------------------------------------------------------- */
+.article-body {
+  @apply text-ink leading-[1.75] text-lg;
+}
+.article-body p {
+  @apply mb-6;
+}
+.article-body h2 {
+  @apply font-display font-bold text-2xl mt-10 mb-4 tracking-tight;
+}
+.article-body h3 {
+  @apply font-display font-bold text-xl mt-8 mb-3 tracking-tight;
+}
+.article-body a {
+  @apply text-bersama-blue underline decoration-bersama-yellow decoration-2 underline-offset-2;
+}
+.article-body blockquote {
+  @apply border-l-2 border-bersama-yellow pl-5 my-6 text-ink-muted italic;
+}
+.article-body .dropcap::first-letter {
+  @apply font-display font-bold float-left text-7xl leading-[0.8] pr-3 pt-1 text-bersama-blue;
+}
+
+/* --------------------------------------------------------------------------
+   Utilities
+   -------------------------------------------------------------------------- */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { setRequestLocale } from 'next-intl/server'
 import { buildMetadata } from '@/lib/metadata'
 import { WhatsAppShareButton } from '@/components/ui/WhatsAppShareButton'
+import { formatDate } from '@/lib/format'
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>
@@ -46,18 +47,10 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) notFound()
 
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/artikel/${article.slug}`
+  const byline = locale === 'ms' ? 'Oleh' : 'By'
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
-      <div className="mb-6">
-        <span className="text-xs font-medium text-bersama-blue bg-bersama-blue/10 px-2 py-0.5 rounded">
-          {String(article.category)}
-        </span>
-        <time className="text-xs text-gray-400 ml-3">
-          {article.publishedAt ? new Date(String(article.publishedAt)).toLocaleDateString() : ''}
-        </time>
-      </div>
-      <h1 className="text-3xl font-bold text-editorial-dark mb-4">{String(article.title)}</h1>
+    <article>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -80,14 +73,42 @@ export default async function ArticlePage({ params }: Props) {
           }),
         }}
       />
-      <p className="text-gray-500 text-sm mb-2">Oleh / By: {String(article.author)}</p>
-      <div className="prose max-w-none mt-8">
+
+      {/* Header */}
+      <header className="border-b-2 border-ink bg-paper">
+        <div className="container-content max-w-article py-10">
+          <p className="kicker">{String(article.category)}</p>
+          <h1 className="mt-3 text-balance font-display text-headline font-black tracking-tight text-ink">
+            {String(article.title)}
+          </h1>
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-byline text-ink-muted">
+            <span className="font-display font-semibold text-ink">
+              {byline} {String(article.author)}
+            </span>
+            {article.publishedAt ? (
+              <>
+                <span className="text-ink-faint" aria-hidden="true">
+                  ·
+                </span>
+                <time dateTime={String(article.publishedAt)}>
+                  {formatDate(String(article.publishedAt), locale)}
+                </time>
+              </>
+            ) : null}
+          </div>
+        </div>
+      </header>
+
+      {/* Body */}
+      <div className="container-content max-w-article py-10">
         {/* Rich text rendering — Payload lexical serializer in Phase 2 */}
-        <p className="text-gray-600">{String(article.excerpt)}</p>
+        <div className="article-body">
+          <p className="dropcap">{String(article.excerpt)}</p>
+        </div>
+        <div className="mt-8 border-t border-rule pt-6">
+          <WhatsAppShareButton title={String(article.title)} url={url} />
+        </div>
       </div>
-      <div className="mt-8 pt-6 border-t border-gray-100">
-        <WhatsAppShareButton title={String(article.title)} url={url} />
-      </div>
-    </main>
+    </article>
   )
 }

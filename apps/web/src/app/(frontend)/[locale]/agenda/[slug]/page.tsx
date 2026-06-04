@@ -43,110 +43,100 @@ export default async function AgendaItemPage({ params }: Props) {
   const pageUrl = `${serverUrl}/${locale}/agenda/${slug}`
   const title = isMs ? item.titleMs : item.titleEn
   const summary = isMs ? item.summaryMs : item.summaryEn
+  const prev = item.number > 1 ? agendaItems.find((a) => a.number === item.number - 1) : undefined
+  const next = item.number < 12 ? agendaItems.find((a) => a.number === item.number + 1) : undefined
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <>
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-100 py-3 px-4">
-        <div className="max-w-3xl mx-auto">
-          <nav className="flex items-center gap-2 text-sm text-gray-500">
-            <Link href={`/${locale}`} className="hover:text-bersama-blue">
-              {isMs ? 'Utama' : 'Home'}
-            </Link>
-            <span>›</span>
-            <Link href={`/${locale}/agenda`} className="hover:text-bersama-blue">
-              {isMs ? 'Agenda' : 'Agenda'}
-            </Link>
-            <span>›</span>
-            <span className="text-editorial-dark font-medium truncate max-w-xs">{title}</span>
-          </nav>
-        </div>
+      <div className="border-b border-rule bg-paper">
+        <nav
+          className="container-content flex items-center gap-2 py-3 text-xs text-ink-faint"
+          aria-label="Breadcrumb"
+        >
+          <Link href={`/${locale}`} className="hover:text-bersama-blue">
+            {isMs ? 'Utama' : 'Home'}
+          </Link>
+          <span aria-hidden="true">›</span>
+          <Link href={`/${locale}/agenda`} className="hover:text-bersama-blue">
+            {isMs ? 'Agenda' : 'Agenda'}
+          </Link>
+          <span aria-hidden="true">›</span>
+          <span className="max-w-xs truncate font-medium text-ink">{title}</span>
+        </nav>
       </div>
 
-      {/* Hero */}
-      <section className="bg-bersama-blue text-white py-12 px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="bg-bersama-yellow text-editorial-dark text-xs font-bold px-3 py-1 rounded-full">
-              {isMs ? `Agenda #${item.number}` : `Agenda #${item.number}`}
+      {/* Header */}
+      <header className="border-b-2 border-ink bg-paper">
+        <div className="container-content max-w-3xl py-10">
+          <div className="flex items-baseline gap-4">
+            <span className="font-display text-5xl font-black leading-none text-bersama-blue tabular-nums">
+              {String(item.number).padStart(2, '0')}
             </span>
+            <p className="kicker pt-2">{isMs ? `Agenda ${item.number} / 12` : `Agenda ${item.number} of 12`}</p>
           </div>
-          <div className="text-5xl mb-4">{item.icon}</div>
-          <h1 className="text-2xl md:text-4xl font-bold leading-tight mb-4">{title}</h1>
-          <p className="text-blue-100 text-lg leading-relaxed">{summary}</p>
+          <h1 className="mt-4 text-balance font-display text-headline font-black tracking-tight text-ink">
+            {title}
+          </h1>
+          <p className="mt-3 text-pretty text-deck text-ink-muted">{summary}</p>
         </div>
-      </section>
-
-      {/* Disclaimer */}
-      <div className="bg-bersama-yellow/10 border-b border-bersama-yellow/30 py-2 px-4 text-center">
-        <p className="text-xs text-editorial-dark">
-          {isMs
-            ? '⚠️ bersama.io adalah platform penyokong TIDAK RASMI. Kami tidak berkaitan dengan Parti Bersama Malaysia.'
-            : '⚠️ bersama.io is an UNOFFICIAL supporter platform. We are not affiliated with Parti Bersama Malaysia.'}
-        </p>
-      </div>
+      </header>
 
       {/* Content */}
-      <div className="max-w-3xl mx-auto px-4 py-10">
-        <div className="bg-white rounded-xl border border-gray-200 p-8 mb-8">
-          <h2 className="text-xl font-bold text-editorial-dark mb-4">
-            {isMs ? 'Huraian Penuh' : 'Full Explanation'}
-          </h2>
-          <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
-            <p className="text-gray-500 italic">
+      <div className="container-content max-w-3xl py-10">
+        <section>
+          <h2 className="kicker">{isMs ? 'Huraian Penuh' : 'Full Explanation'}</h2>
+          <div className="article-body mt-4">
+            <p className="italic text-ink-faint">
               {isMs
                 ? 'Kandungan terperinci akan ditambah tidak lama lagi. Semak kembali untuk kemas kini.'
                 : 'Detailed content will be added soon. Check back for updates.'}
             </p>
           </div>
-        </div>
-
-        {/* Navigation between agenda items */}
-        <div className="flex items-center justify-between gap-4 mb-8">
-          {item.number > 1 && (() => {
-            const prev = agendaItems.find((a) => a.number === item.number - 1)
-            return prev ? (
-              <Link
-                href={`/${locale}/agenda/${prev.slug}`}
-                className="flex items-center gap-2 text-bersama-blue text-sm hover:underline"
-              >
-                ← {isMs ? prev.titleMs : prev.titleEn}
-              </Link>
-            ) : null
-          })()}
-          {item.number < 12 && (() => {
-            const next = agendaItems.find((a) => a.number === item.number + 1)
-            return next ? (
-              <Link
-                href={`/${locale}/agenda/${next.slug}`}
-                className="flex items-center gap-2 text-bersama-blue text-sm hover:underline ml-auto"
-              >
-                {isMs ? next.titleMs : next.titleEn} →
-              </Link>
-            ) : null
-          })()}
-        </div>
+        </section>
 
         {/* Share */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-          <h3 className="font-semibold text-editorial-dark mb-3">
-            {isMs ? 'Kongsi agenda ini' : 'Share this agenda'}
-          </h3>
+        <section className="mt-8 flex items-center gap-4 border-t border-rule pt-6">
+          <span className="text-sm text-ink-muted">
+            {isMs ? 'Kongsi agenda ini' : 'Share this agenda'}:
+          </span>
           <WhatsAppShareButton title={title} url={pageUrl} />
-        </div>
+        </section>
+
+        {/* Prev / Next */}
+        <nav className="mt-8 flex items-stretch justify-between gap-4 border-t border-rule pt-6">
+          {prev ? (
+            <Link href={`/${locale}/agenda/${prev.slug}`} className="group max-w-[45%]">
+              <span className="kicker-muted">← {isMs ? 'Sebelum' : 'Previous'}</span>
+              <span className="story-headline mt-1 block text-sm font-bold">
+                {isMs ? prev.titleMs : prev.titleEn}
+              </span>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <Link href={`/${locale}/agenda/${next.slug}`} className="group ml-auto max-w-[45%] text-right">
+              <span className="kicker-muted">{isMs ? 'Seterusnya' : 'Next'} →</span>
+              <span className="story-headline mt-1 block text-sm font-bold">
+                {isMs ? next.titleMs : next.titleEn}
+              </span>
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
 
         {/* Related news — placeholder */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="font-semibold text-editorial-dark mb-3">
-            {isMs ? 'Berita Berkaitan' : 'Related News'}
-          </h3>
-          <p className="text-gray-500 text-sm italic">
+        <section className="mt-8 border-t border-rule pt-6">
+          <h2 className="kicker">{isMs ? 'Berita Berkaitan' : 'Related News'}</h2>
+          <p className="mt-3 text-sm italic text-ink-faint">
             {isMs
               ? 'Berita berkaitan akan muncul di sini tidak lama lagi.'
               : 'Related news will appear here soon.'}
           </p>
-        </div>
+        </section>
       </div>
-    </main>
+    </>
   )
 }

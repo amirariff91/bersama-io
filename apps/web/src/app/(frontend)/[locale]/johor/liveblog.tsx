@@ -10,9 +10,11 @@ interface LivePost {
   postedAt: string
 }
 
-export function LiveBlog() {
+export function LiveBlog({ locale }: { locale: string }) {
+  const isMs = locale === 'ms'
+  const timeLocale = isMs ? 'ms-MY' : 'en-MY'
   const [posts, setPosts] = useState<LivePost[]>([])
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
 
   useEffect(() => {
     async function fetchPosts() {
@@ -34,38 +36,44 @@ export function LiveBlog() {
   }, [])
 
   return (
-    <div className="space-y-4">
-      <p className="text-xs text-gray-400">
-        Dikemaskini: {lastUpdated.toLocaleTimeString('ms-MY')}
-      </p>
+    <div className="space-y-5">
+      {lastUpdated ? (
+        <p className="text-xs text-ink-faint" suppressHydrationWarning>
+          {isMs ? 'Dikemaskini' : 'Updated'}:{' '}
+          {lastUpdated.toLocaleTimeString(timeLocale)}
+        </p>
+      ) : null}
 
       {posts.length === 0 ? (
-        <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-xl border border-gray-100">
-          <p className="font-medium">Kemaskini akan muncul di sini semasa keputusan</p>
-          <p className="text-sm mt-1 text-gray-400">
-            Updates will appear here during results
+        <div className="border-t border-rule pt-5">
+          <p className="font-display font-bold text-ink">
+            {isMs
+              ? 'Kemaskini akan muncul di sini semasa keputusan'
+              : 'Updates will appear here during results'}
+          </p>
+          <p className="mt-1 text-sm text-ink-muted">
+            {isMs
+              ? 'Pantau ruangan ini pada malam pengiraan undi.'
+              : 'Watch this space on counting night.'}
           </p>
         </div>
       ) : (
-        posts.map(post => (
-          <div
-            key={post.id}
-            className="border-l-4 border-bersama-yellow pl-4 py-2 bg-white rounded-r-lg shadow-sm"
-          >
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <span className="text-xs font-semibold uppercase bg-bersama-blue text-white px-2 py-0.5 rounded">
-                {post.type}
-              </span>
-              {post.seat && (
-                <span className="text-xs text-gray-500">{post.seat}</span>
-              )}
-              <span className="text-xs text-gray-400 ml-auto">
-                {new Date(post.postedAt).toLocaleTimeString('ms-MY')}
-              </span>
-            </div>
-            <p className="text-sm text-gray-800">{post.content}</p>
-          </div>
-        ))
+        <ol className="space-y-5">
+          {posts.map((post) => (
+            <li key={post.id} className="border-l-2 border-bersama-red pl-4">
+              <div className="mb-1 flex flex-wrap items-center gap-2">
+                <span className="tag-live">{post.type}</span>
+                {post.seat ? (
+                  <span className="text-xs text-ink-faint">{post.seat}</span>
+                ) : null}
+                <time className="ml-auto text-xs text-ink-faint" suppressHydrationWarning>
+                  {new Date(post.postedAt).toLocaleTimeString(timeLocale)}
+                </time>
+              </div>
+              <p className="text-sm leading-relaxed text-ink">{post.content}</p>
+            </li>
+          ))}
+        </ol>
       )}
     </div>
   )

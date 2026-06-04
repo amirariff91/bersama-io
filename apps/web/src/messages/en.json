@@ -4,8 +4,13 @@
     "tagline": "Supporter's Voice, Free & Bold",
     "unofficial": "Unofficial supporter platform of Parti Bersama Malaysia",
     "readMore": "Read more",
+    "readAt": "Read at {source}",
+    "share": "Share",
+    "shareIntro": "read more at bersama.io",
     "shareWhatsApp": "Share on WhatsApp",
     "backToHome": "Back to homepage",
+    "live": "Live",
+    "source": "Source",
     "loading": "Loading...",
     "error": "An error occurred"
   },
@@ -41,6 +46,17 @@
     "ctaNews": "Follow Latest News",
     "ctaAgenda": "Read the 12-Point Agenda"
   },
+  "home": {
+    "leadLabel": "Top Story",
+    "latestLabel": "Latest News",
+    "noNews": "No recent news at this time. Our sources refresh every 15 minutes.",
+    "agendaLabel": "What Bersama Stands For",
+    "johorLabel": "Johor Election",
+    "idCardKicker": "Spread the word",
+    "idCardTitle": "Supporter ID Card",
+    "idCardText": "Generate your supporter ID card and share it.",
+    "idCardCta": "Create My Card"
+  },
   "subscribe": {
     "heading": "Get the Latest Updates",
     "sectionTitle": "Get the Latest Updates",
@@ -48,6 +64,7 @@
     "sectionSubtitle": "Subscribe to our newsletter for Bersama updates delivered straight to your inbox.",
     "placeholder": "Your email address",
     "button": "Subscribe Now",
+    "loading": "Subscribing...",
     "consent": "I consent to my data being processed by bersama.io and its service providers, including providers outside Malaysia, for the purpose of receiving news updates.",
     "success": "Thank you! Check your email for confirmation.",
     "error": "An error occurred. Please try again."
@@ -87,12 +104,16 @@
     "liveUpdate": "Live Updates",
     "liveBlogTitle": "Live Updates",
     "keySeatsTitle": "Key Seats to Watch",
+    "incumbentLabel": "Incumbent",
     "results": "Results",
     "disclaimer": "This election coverage represents the independent editorial judgment of bersama.io and does not constitute official Parti Bersama Malaysia electoral communications."
   },
   "positions": {
     "heading": "Bersama Positions",
     "subheading": "The official record of Parti Bersama Malaysia's positions on current issues",
+    "emptyHeading": "Position Record Coming Soon",
+    "emptyText": "We are documenting the party's positions from official statements, parliamentary Hansard, and media sources. Check back soon.",
+    "viewSource": "View source",
     "evidenceTypes": {
       "statement": "Official Statement",
       "hansard": "Parliamentary Hansard",
@@ -101,10 +122,25 @@
       "interview": "Interview"
     }
   },
+  "kad": {
+    "title": "Supporter ID Card",
+    "description": "Generate your supporter ID card. Only a name is needed — no IC number is collected.",
+    "placeholder": "Your name",
+    "generate": "Create My Card",
+    "generating": "Generating...",
+    "download": "Download",
+    "share": "Share on WhatsApp",
+    "regenerate": "Regenerate",
+    "error": "Could not generate the card. Please try again."
+  },
   "footer": {
     "unofficial": "bersama.io is an UNOFFICIAL supporter platform. We are not affiliated with Parti Bersama Malaysia.",
     "rights": "All rights reserved",
     "privacy": "Privacy Policy",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "sectionsLabel": "Sections",
+    "linksLabel": "Links",
+    "officialSite": "Official Party Site",
+    "editor": "Responsible editor & PDPA data controller: Hazim"
   }
 }

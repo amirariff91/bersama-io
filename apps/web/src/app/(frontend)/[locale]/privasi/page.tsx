@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 import { buildMetadata } from '@/lib/metadata'
+import { PageHeader } from '@/components/layout/PageHeader'
 
 interface Props {
   params: Promise<{ locale: string }>
@@ -26,40 +27,22 @@ export default async function PrivasiPage({ params }: Props) {
   const isMs = locale === 'ms'
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <section className="bg-bersama-blue text-white py-12 px-4">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            {isMs ? 'Dasar Privasi' : 'Privacy Policy'}
-          </h1>
-          <p className="text-blue-100">
-            {isMs ? 'Berkuat kuasa: Jun 2026' : 'Effective: June 2026'}
-          </p>
-        </div>
-      </section>
-
-      {/* Disclaimer banner */}
-      <div className="bg-bersama-yellow/20 border-b border-bersama-yellow/40 py-3 px-4">
-        <div className="max-w-3xl mx-auto">
-          <p className="text-sm text-editorial-dark font-medium">
-            ⚠️{' '}
-            {isMs
-              ? 'bersama.io adalah platform penyokong TIDAK RASMI dan tidak berkaitan dengan Parti Bersama Malaysia atau mana-mana ahlinya.'
-              : 'bersama.io is an UNOFFICIAL supporter platform and is not affiliated with Parti Bersama Malaysia or any of its members.'}
-          </p>
-        </div>
-      </div>
+    <>
+      <PageHeader
+        kicker={isMs ? 'PDPA 2010' : 'PDPA 2010'}
+        title={isMs ? 'Dasar Privasi' : 'Privacy Policy'}
+        deck={isMs ? 'Berkuat kuasa: Jun 2026' : 'Effective: June 2026'}
+      />
 
       {/* Content */}
-      <div className="max-w-3xl mx-auto px-4 py-12 space-y-10">
+      <div className="mx-auto max-w-3xl px-4 py-12 space-y-10 sm:px-6">
 
         {/* 1. Pengawal Data */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '1. Pengawal Data' : '1. Data Controller'}
           </h2>
-          <div className="prose prose-sm text-gray-700 space-y-2">
+          <div className="text-sm text-gray-700 space-y-2">
             <p>
               {isMs
                 ? 'Platform ini dikendalikan oleh bersama.io. Pengarang bertanggungjawab: Hazim.'
@@ -80,7 +63,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* 2. Data yang dikumpul */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '2. Data yang Kami Kumpul' : '2. Data We Collect'}
           </h2>
           <div className="space-y-4 text-gray-700 text-sm">
@@ -125,7 +108,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* 3. Tujuan pemprosesan */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '3. Tujuan Pemprosesan Data' : '3. Data Processing Purposes'}
           </h2>
           <ul className="list-disc list-inside space-y-2 text-gray-700 text-sm">
@@ -138,7 +121,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* 4. Pihak ketiga */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '4. Perkongsian dengan Pihak Ketiga' : '4. Third-Party Sharing'}
           </h2>
           <div className="space-y-3 text-gray-700 text-sm">
@@ -157,7 +140,7 @@ export default async function PrivasiPage({ params }: Props) {
               <div key={provider.name} className="bg-gray-50 rounded-lg p-4 border border-gray-100">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span className="font-semibold text-editorial-dark">{provider.name}</span>
+                    <span className="font-semibold text-ink">{provider.name}</span>
                     <span className="text-gray-400 mx-2">·</span>
                     <span className="text-xs text-gray-500">{provider.location}</span>
                   </div>
@@ -175,7 +158,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* 5. Pemindahan rentas sempadan */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '5. Pemindahan Data Rentas Sempadan' : '5. Cross-Border Data Transfer'}
           </h2>
           <div className="text-gray-700 text-sm space-y-3">
@@ -194,7 +177,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* 6. Tempoh penyimpanan */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '6. Tempoh Penyimpanan Data' : '6. Data Retention Period'}
           </h2>
           <div className="text-gray-700 text-sm space-y-3">
@@ -218,7 +201,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* 7. Hak pengguna */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '7. Hak Anda' : '7. Your Rights'}
           </h2>
           <div className="text-gray-700 text-sm space-y-3">
@@ -244,7 +227,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* 8. Kuki */}
         <section>
-          <h2 className="text-xl font-bold text-editorial-dark mb-4 pb-2 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-ink mb-4 pb-2 border-b border-gray-200">
             {isMs ? '8. Kuki (Cookies)' : '8. Cookies'}
           </h2>
           <div className="text-gray-700 text-sm space-y-2">
@@ -258,7 +241,7 @@ export default async function PrivasiPage({ params }: Props) {
 
         {/* Footer note */}
         <div className="bg-gray-100 rounded-xl p-6 text-sm text-gray-600">
-          <p className="font-semibold text-editorial-dark mb-2">
+          <p className="font-semibold text-ink mb-2">
             {isMs ? 'Penafian Penting' : 'Important Disclaimer'}
           </p>
           <p>
@@ -271,6 +254,6 @@ export default async function PrivasiPage({ params }: Props) {
           </p>
         </div>
       </div>
-    </main>
+    </>
   )
 }
