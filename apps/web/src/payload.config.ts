@@ -56,7 +56,7 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL,
+      connectionString: process.env.DATABASE_URL ?? (() => { throw new Error('DATABASE_URL env var is required') })(),
     },
   }),
   plugins: [

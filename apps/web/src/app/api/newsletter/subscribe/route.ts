@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const listmonkPassword = process.env.LISTMONK_PASSWORD
     if (listmonkUrl && listmonkUsername && listmonkPassword) {
       const basicAuth = Buffer.from(`${listmonkUsername}:${listmonkPassword}`).toString('base64')
-      await fetch(`${listmonkUrl}/api/subscribers`, {
+      const res = await fetch(`${listmonkUrl}/api/subscribers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,10 +62,14 @@ export async function POST(req: NextRequest) {
           email,
           name: email.split('@')[0],
           status: 'enabled',
-          lists: [1],
+          lists: [parseInt(process.env.LISTMONK_LIST_ID ?? '1', 10)],
           preconfirm_subscriptions: true,
         }),
       })
+      if (!res.ok && res.status !== 409) {
+        const errText = await res.text()
+        throw new Error(`Listmonk error: ${res.status} ${errText}`)
+      }
     }
 
     // Write PDPA audit record to Members collection
