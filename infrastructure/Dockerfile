@@ -1,4 +1,4 @@
-# Stage 1: deps (install ALL deps incl devDeps — needed for Next.js build)
+# Stage 1: deps (install ALL deps incl devDeps — needed for Next.js build + runtime)
 FROM oven/bun:1-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -13,13 +13,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-# next build collects page data + runs generateStaticParams, which connect to
-# Payload/Neon — so DATABASE_URL and PAYLOAD_SECRET must be present at build time.
+# next build collects page data + runs generateStaticParams, which load Payload
+# config — so DATABASE_URL and PAYLOAD_SECRET must be present at build time.
 ARG DATABASE_URL
 ARG PAYLOAD_SECRET
 ENV DATABASE_URL=$DATABASE_URL
 ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
-# Build args for public env vars (needed at build time)
+# Build args for public env vars (baked into the client bundle)
 ARG NEXT_PUBLIC_SERVER_URL
 ARG NEXT_PUBLIC_GA4_ID
 ARG NEXT_PUBLIC_CLARITY_ID
@@ -34,24 +34,26 @@ WORKDIR /app/apps/web
 RUN bun run payload generate:importmap 2>/dev/null || true
 RUN bun run build
 
-# Stage 3: runner — Next.js standalone output runs under Node
+# Stage 3: runner — ship full node_modules + run `next start` (no standalone).
+# Payload's admin/GraphQL dynamically require packages that standalone tracing
+# misses; carrying the real node_modules avoids MODULE_NOT_FOUND at runtime.
 FROM node:20-alpine AS runner
+RUN apk add --no-cache curl
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-# curl for the container healthcheck (Coolify probes with curl/wget)
-RUN apk add --no-cache curl
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-# Monorepo standalone layout: server.js lives under apps/web/
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+# Workspace layout: hoisted node_modules at /app, app build under /app/apps/web
+COPY --from=deps    --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./apps/web/.next
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/package.json ./apps/web/package.json
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
 USER nextjs
+WORKDIR /app/apps/web
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-# Health check for Coolify
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -fsS http://localhost:3000/api/health || exit 1
-CMD ["node", "apps/web/server.js"]
+CMD ["../../node_modules/.bin/next", "start"]

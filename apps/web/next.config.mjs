@@ -1,25 +1,15 @@
 import { withPayload } from '@payloadcms/next/withPayload'
 import createNextIntlPlugin from 'next-intl/plugin'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  // Monorepo: trace files from the repo root so the standalone bundle is complete
-  outputFileTracingRoot: path.join(__dirname, '../../'),
-  // Payload's GraphQL/REST routes require these at runtime but Next's file
-  // tracing misses them (dynamic require) — force them into the standalone bundle.
-  outputFileTracingIncludes: {
-    '/**': ['../../node_modules/undici/**/*'],
-  },
-  // Keep Payload's heavy deps external (resolved from node_modules at runtime,
-  // and thus traced into the standalone output) rather than webpack-bundled.
-  serverExternalPackages: ['undici'],
+  // NOTE: deliberately NOT using `output: 'standalone'`. Payload's admin/GraphQL
+  // routes dynamically require packages (undici, ws, ajv, …) that Next's file
+  // tracing misses, which crashes a standalone server at runtime. We ship the
+  // full node_modules and run `next start` instead — reliable on a non-serverless
+  // host (Hetzner/Coolify) where image size is not a hard constraint.
   reactStrictMode: true,
   images: {
     remotePatterns: [
